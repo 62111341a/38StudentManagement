@@ -15,13 +15,15 @@ public class StudentService {
 
   private StudentRepository repository;
 
+
   @Autowired
   public StudentService(StudentRepository repository) {
     this.repository = repository;
   }
 
   public List<Student> searchStudentList() {
-    return repository.search();
+    List<Student> search = repository.search();
+    return search;
   }
 
   public StudentDetail searchStudent(String id){
@@ -29,7 +31,7 @@ public class StudentService {
     List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
     StudentDetail studentDetail = new StudentDetail();
     studentDetail.setStudent(student);
-    studentDetail.setStudentsCourses(studentsCourses);
+    studentDetail.setStudentsCourseList(studentsCourses);
     return studentDetail;
   }
 
@@ -38,21 +40,23 @@ public class StudentService {
   }
 
   @Transactional
-  public void registerStudent(StudentDetail studentDetail) {
-    repository.registerStudent(studentDetail.getStudent());
-    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-      studentsCourse.setStudentId(studentDetail.getStudent().getId());
-      studentsCourse.setCourseStartAt(LocalDateTime.now());
-      studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
-      repository.registerStudentsCourses(studentsCourse);
-    }
+  public StudentDetail registerStudent(StudentDetail studentDetail) {
+    Student student = studentDetail.getStudent();
+    repository.registerStudent(student);
+    studentDetail.getStudentsCourseList().forEach(studentsCourses -> {
+              initStudentsCourse(studentsCourses, student);
+      repository.registerStudentsCourses(studentsCourses);
+            });
+    return studentDetail;
   }
-
+  private static void initStudentsCourse(StudentsCourses studentsCourse, Student student){
+    studentsCourse.setStudentId(student.getId());
+    studentsCourse.setCourseStartAt(LocalDateTime.now());
+    studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+  }
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-      repository.updateStudentsCourses(studentsCourse);
-    }
+      studentDetail.getStudentsCourseList().forEach(studentsCourse -> repository.updateStudentsCourses(studentsCourse));
   }
 }

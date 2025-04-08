@@ -12,10 +12,10 @@ import raisetech.StudentManagement.data.StudentsCourses;
 @Mapper
 public interface StudentRepository {
 
-  @Select("SELECT * FROM students")
+
   List<Student> search();
 
-  @Select("SELECT * FROM students WHERE id = #{id}")
+
   Student searchStudent(String id);
 
   @Select("SELECT * FROM students_courses")
