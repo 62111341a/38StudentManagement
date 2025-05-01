@@ -2,28 +2,35 @@ package raisetech.StudentManagement.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentsCourses;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
+
+@NoArgsConstructor
 @Service
 public class StudentService {
 
   private StudentRepository repository;
-
+  private StudentConverter converter;
+  private List<Student> studentList;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
   }
 
-  public List<Student> searchStudentList() {
+  public List<StudentDetail> searchStudentList() {
     List<Student> search = repository.search();
-    return search;
+    List<StudentsCourses> studentCourseList = repository.searchStudentsCoursesList();
+    return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
   public StudentDetail searchStudent(String id){
@@ -44,16 +51,17 @@ public class StudentService {
     Student student = studentDetail.getStudent();
     repository.registerStudent(student);
     studentDetail.getStudentsCourseList().forEach(studentsCourses -> {
-              initStudentsCourse(studentsCourses, student);
+      initStudentsCourses(studentsCourses, student.getId());
       repository.registerStudentsCourses(studentsCourses);
             });
     return studentDetail;
   }
-  private static void initStudentsCourse(StudentsCourses studentsCourse, Student student){
-    studentsCourse.setStudentId(student.getId());
+  public void initStudentsCourses(StudentsCourses studentsCourse, String studentId) {
+    studentsCourse.setStudentId(studentId);
     studentsCourse.setCourseStartAt(LocalDateTime.now());
     studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
   }
+
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());

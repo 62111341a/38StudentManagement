@@ -23,7 +23,7 @@
     </select>
 
     <!-- registerStudentメソッド (INSERT) -->
-    <insert id="registerStudent" parameterType="raisetech.StudentManagement.data.Student">
+    <insert id="registerStudent" parameterType="raisetech.StudentManagement.data.Student" statementType="PREPARED" useGeneratedKeys="true" keyProperty="studentId">
         INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted)
         VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
     </insert>
