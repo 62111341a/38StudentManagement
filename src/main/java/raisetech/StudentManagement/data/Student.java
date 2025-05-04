@@ -32,4 +32,14 @@ public class Student {
   private String sex;
   private String remark;
   private boolean isDeleted;
+  public Student(String id, String name, String kanaName, String nickname,
+                 String email, String area, String sex) {
+    this.id = id;
+    this.name = name;
+    this.kanaName = kanaName;
+    this.nickname = nickname;
+    this.email = email;
+    this.area = area;
+    this.sex = sex;
+  }
 }

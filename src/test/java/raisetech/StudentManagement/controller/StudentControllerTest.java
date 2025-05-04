@@ -37,14 +37,16 @@ class StudentControllerTest {
 }
 @Test
     void 受講生詳細の受講生でIDに数字以外を用いた時に入力チェックにかかること(){
-    Student student = new Student();
-    student.setId("テストです。");
-    student.setName("江波公史");
-    student.setKanaName("エナミコウジ");
-    student.setNickname("エナミ");
-    student.setEmail("test@example.com");
-    student.setArea("奈良県");
-    student.setSex("男性");
+    Student student = new Student(
+            "テストです。",
+            "江波公史",
+            "エナミコウジ",
+            "エナミ",
+            "test@example.com",
+            "奈良県",
+            "男性"
+    );
+
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
     assertEquals("7" ,violations.size());
 }
