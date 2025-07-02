@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
+
 import java.util.List;
 import java.util.Set;
 
@@ -24,30 +25,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(StudentController.class)
 class StudentControllerTest {
-@Autowired
+    @Autowired
     private MockMvc mockMvc;
-@MockBean
+    @MockBean
     private StudentService service;
     private Validator validator = (Validator) Validation.buildDefaultValidatorFactory().getValidator();
-@Test
-    void 受講生詳細の一覧検索が実行できて空のリストが帰ってくること()throws Exception{
 
-    mockMvc.perform(get("/studentList")).andExpect(status().isOk());
-    verify(service, times(1)).searchStudentList();
-}
-@Test
-    void 受講生詳細の受講生でIDに数字以外を用いた時に入力チェックにかかること(){
-    Student student = new Student(
-            "テストです。",
-            "江波公史",
-            "エナミコウジ",
-            "エナミ",
-            "test@example.com",
-            "奈良県",
-            "男性"
-    );
+    @Test
+    void 受講生詳細の一覧検索が実行できて空のリストが帰ってくること() throws Exception {
 
-    Set<ConstraintViolation<Student>> violations = validator.validate(student);
-    assertEquals("7" ,violations.size());
-}
+        mockMvc.perform(get("/studentList")).andExpect(status().isOk());
+        verify(service, times(1)).searchStudentList();
+    }
+
+    @Test
+    void 受講生詳細の受講生でIDに数字以外を用いた時に入力チェックにかかること() {
+        Student student = new Student(
+
+
+        );
+
+        Set<ConstraintViolation<Student>> violations = validator.validate(student);
+        assertEquals("7", violations.size());
+    }
 }

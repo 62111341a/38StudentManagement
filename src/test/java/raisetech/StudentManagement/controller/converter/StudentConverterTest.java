@@ -22,16 +22,21 @@ public class StudentConverterTest {
     // createStudent() メソッドの追加
     private Student createStudent() {
         Student student = new Student();
-        student.setId("1");
-        student.setName("田中太郎");
-        student.setKanaName("タナカタロウ");
-        student.setNickname("タナカ");
-        student.setEmail("tanaka@example.com");
-        student.setArea("東京");
-        student.setSex("男性");
-        student.setRemark("");
-        student.setDeleted(false);
+                private Student createStudent() {
+                        .id("1")
+                        .name("田中太郎")
+                        .kanaName("タナカタロウ")
+                        .nickname("タナカ")
+                        .email("tanaka@example.com")
+                        .area("東京")
+                        .sex("男性")
+                        .remark("")
+                        .deleted(false);
+
+                }
+
         return student;
+
     }
 
     @Test
