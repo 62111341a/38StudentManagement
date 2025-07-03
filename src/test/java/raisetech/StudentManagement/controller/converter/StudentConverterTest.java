@@ -22,21 +22,16 @@ public class StudentConverterTest {
     // createStudent() メソッドの追加
     private Student createStudent() {
         Student student = new Student();
-                private Student createStudent() {
-                        .id("1")
-                        .name("田中太郎")
-                        .kanaName("タナカタロウ")
-                        .nickname("タナカ")
-                        .email("tanaka@example.com")
-                        .area("東京")
-                        .sex("男性")
-                        .remark("")
-                        .deleted(false);
-
-                }
-
+        student.setId("1");
+        student.setName("田中太郎");
+        student.setKanaName("タナカタロウ");
+        student.setNickname("タナカ");
+        student.setEmail("tanaka@example.com");
+        student.setArea("東京");
+        student.setSex("男性");
+        student.setRemark("");
+        student.setDeleted(false);
         return student;
-
     }
 
     @Test
@@ -67,10 +62,10 @@ public class StudentConverterTest {
 
     @Test
     void 受講生のリストと受講生コース情報のリストを渡したときに紐付かない受講生コース情報は除外されること() {
-        Student student = createStudent();  // createStudent() を呼び出す
+        Student student = createStudent();
         StudentsCourses studentsCourses = new StudentsCourses();
         studentsCourses.setId("1");
-        studentsCourses.setStudentId("2");  // 学生IDが異なる
+        studentsCourses.setStudentId("2"); // 学生IDが異なる
         studentsCourses.setCourseName("Javaコース");
         studentsCourses.setCourseStartAt(LocalDateTime.now());
         studentsCourses.setCourseEndAt(LocalDateTime.now().plusYears(1));
@@ -78,7 +73,6 @@ public class StudentConverterTest {
         List<Student> studentList = List.of(student);
         List<StudentsCourses> studentsCoursesList = List.of(studentsCourses);
 
-        // このテストでは、studentListの学生IDとstudentsCoursesのstudentIdが一致しないため、コース情報は除外されるはず
         List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentsCoursesList);
 
         assertThat(actual.get(0).getStudent()).isEqualTo(student);
