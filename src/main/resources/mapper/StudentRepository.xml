@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="raisetech.StudentManagement.repository.StudentRepository">
+
+    <!-- searchメソッド -->
+    <select id="search" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students
+    </select>
+
+    <!-- searchStudentメソッド -->
+    <select id="searchStudent" parameterType="String" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students WHERE id = #{id}
+    </select>
+
+    <!-- searchStudentsCoursesListメソッド -->
+    <select id="searchStudentsCoursesList" resultType="raisetech.StudentManagement.data.StudentsCourses">
+        SELECT * FROM students_courses
+    </select>
+
+    <!-- searchStudentsCoursesメソッド -->
+    <select id="searchStudentsCourses" parameterType="String" resultType="raisetech.StudentManagement.data.StudentsCourses">
+        SELECT * FROM students_courses WHERE student_id = #{studentId}
+    </select>
+
+    <!-- registerStudentメソッド (INSERT) -->
+    <insert id="registerStudent" parameterType="raisetech.StudentManagement.data.Student" statementType="PREPARED" useGeneratedKeys="true" keyProperty="studentId">
+        INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted)
+        VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
+    </insert>
+
+    <!-- registerStudentsCoursesメソッド (INSERT) -->
+    <insert id="registerStudentsCourses" parameterType="raisetech.StudentManagement.data.StudentsCourses">
+        INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)
+        VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
+    </insert>
+
+    <!-- updateStudentメソッド (UPDATE) -->
+    <update id="updateStudent" parameterType="raisetech.StudentManagement.data.Student">
+        UPDATE students SET
+        name = #{name},
+        kana_name = #{kanaName},
+        nickname = #{nickname},
+        email = #{email},
+        area = #{area},
+        age = #{age},
+        sex = #{sex},
+        remark = #{remark},
+        is_deleted = #{isDeleted}
+        WHERE id = #{id}
+    </update>
+
+    <!-- updateStudentsCoursesメソッド (UPDATE) -->
+    <update id="updateStudentsCourses" parameterType="raisetech.StudentManagement.data.StudentsCourses">
+        UPDATE students_courses
+        SET course_name = #{courseName}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 追加のUPDATEメソッド -->
+
+    <!-- updateStudentByEmailメソッド (UPDATE) -->
+    <update id="updateStudentByEmail" parameterType="raisetech.StudentManagement.data.Student">
+        UPDATE students
+        SET name = #{name},
+        kana_name = #{kanaName},
+        nickname = #{nickname},
+        area = #{area},
+        age = #{age},
+        sex = #{sex},
+        remark = #{remark},
+        is_deleted = #{isDeleted}
+        WHERE email = #{email}
+    </update>
+
+    <!-- updateStudentByNicknameメソッド (UPDATE) -->
+    <update id="updateStudentByNickname" parameterType="raisetech.StudentManagement.data.Student">
+        UPDATE students
+        SET name = #{name},
+        kana_name = #{kanaName},
+        email = #{email},
+        area = #{area},
+        age = #{age},
+        sex = #{sex},
+        remark = #{remark},
+        is_deleted = #{isDeleted}
+        WHERE nickname = #{nickname}
+    </update>
+
+    <!-- updateStudentsCoursesByCourseNameメソッド (UPDATE) -->
+    <update id="updateStudentsCoursesByCourseName" parameterType="raisetech.StudentManagement.data.StudentsCourses">
+        UPDATE students_courses
+        SET course_start_at = #{courseStartAt},
+        course_end_at = #{courseEndAt}
+        WHERE course_name = #{courseName}
+    </update>
+
+</mapper>
